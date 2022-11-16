@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "DirtLogs Frontend",
+      "script": "npm",
+      "args" : "run server"
+    }
+  ]
+}
