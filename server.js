@@ -1,10 +1,11 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import nodeGzip from 'node-gzip';
 import { resolve } from 'path';
 
 const app = express();
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 app.get('/*', async (req, res) => {
     const log = req.originalUrl;
@@ -19,7 +20,12 @@ app.get('/*', async (req, res) => {
         return res.sendFile(resolve('./public/page-not-found.html'));
     }
 
-    return res.render("log-file", { log: await response.text() });
+    if (response.url.endsWith('.log.gz')) {
+        const logText = (await nodeGzip.ungzip(await response.arrayBuffer())).toString();
+        return res.render('log-file', { log: logText });
+    }
+
+    return res.render('log-file', { log: await response.text() });
 });
 
 app.listen(process.env.FRONTEND_PORT, () => {
