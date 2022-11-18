@@ -4,7 +4,7 @@ echo "Fetching updates from github ..."
 git restore . && git pull
 
 echo "Stopping current pm2 process ..."
-pm2 stop all && pm2 delete all
+pm2 stop "DirtLogs Frontend" && pm2 delete "DirtLogs Frontend"
 
 echo "Installing dependencies ..."
 npm install \
